@@ -1,0 +1,20 @@
+{
+  "name": "ts_todo",
+  "version": "1.0.0",
+  "description": "a typescript todo",
+  "main": "app.js",
+  "scripts": {
+    "start": "concurrently \"tsc -w\" \"nodemon -w src src/app.ts\""
+  },
+  "author": "Rilwan gabi",
+  "license": "ISC",
+  "dependencies": {
+    "expresss": "^0.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.3"
+  }
+}
