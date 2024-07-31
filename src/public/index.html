@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS_TODO</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <section class="button-section">
+        <div class="nav">
+            <button id="add-btn">Add new task</button>
+            <button id="delete-btn">Delete all the task</button>
+        </div>
+    </section>
+    <section class="container">
+    </section>
+    <p id="noTask">Nothing happening here.</p>
+    <div class="modal">
+        <form action="post" id="new-task-form">
+            <input type="text" name="" class="title" placeholder="Enter the title">
+            <textarea name="description" class="description-el" placeholder="Description..."></textarea>
+        </form>
+        <button id="done-btn">Done</button>
+    </div>
+    <script src="../../dist/public/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js"></script>
+</body>
+</html>
