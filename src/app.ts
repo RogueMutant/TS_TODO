@@ -9,7 +9,7 @@ import authentiicateUsers from "./middleware/auth";
 
 const connectDB = require("./db/connect");
 const app: Application = express();
-app.use(express.static("src/public"));
+app.use(express.static("./public"));
 app.use(express.json());
 
 app.use("/home/auth", todoAuth);

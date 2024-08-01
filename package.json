@@ -4,7 +4,8 @@
   "description": "a typescript todo",
   "main": "app.js",
   "scripts": {
-    "start": "concurrently \"tsc -w\" \"nodemon -w src src/app.ts\""
+    "start": "concurrently \"tsc -w\" \"nodemon -w src src/app.ts\"",
+    "build": "tsc && cp -r public dist/"
   },
   "author": "Rilwan gabi",
   "license": "ISC",

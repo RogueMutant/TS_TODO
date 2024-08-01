@@ -1,2 +1,13 @@
 /node_modules
 *.txt
+
+#Build output
+dist/
+
+# Environment variables
+.env
+
+# compiled js files
+*.map
+*.d.ts
+*.js
