@@ -22,7 +22,7 @@ const auth_1 = __importDefault(require("./routers/auth"));
 const auth_2 = __importDefault(require("./middleware/auth"));
 const connectDB = require("./db/connect");
 const app = (0, express_1.default)();
-app.use(express_1.default.static("./public"));
+app.use(express_1.default.static("src/public"));
 app.use(express_1.default.json());
 app.use("/home/auth", auth_1.default);
 app.use("/home/todo", auth_2.default, routes_1.default);

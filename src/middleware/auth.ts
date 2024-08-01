@@ -1,24 +1,43 @@
+require("dotenv").config();
 import { NextFunction, Request, Response } from "express";
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 import UnauthenticatedError from "../errors/unauthenticated";
 import { customRequest } from "../types/custom";
 
+// Define the structure of the JWT payload
+interface JwtPayload {
+  userId: string;
+  userName: string;
+}
+
 const auth = async (req: customRequest, res: Response, next: NextFunction) => {
-  // check header
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer")) {
-    console.log(req);
-    throw new UnauthenticatedError("Authentication invalid");
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    throw new UnauthenticatedError("No token provided");
   }
+
   const token = authHeader.split(" ")[1];
 
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
-    // attach the user to the job routes
-    req.user = { userId: payload.userId, name: payload.userName };
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET as string
+    ) as JwtPayload;
+
+    if (!decoded) {
+      console.log("wrong token provided");
+      throw new UnauthenticatedError("Invalid token");
+    }
+
+    req.user = { userId: decoded.userId, name: decoded.userName };
     next();
   } catch (error) {
-    throw new UnauthenticatedError("Authentication invalid");
+    // console.log(req.headers, token);
+    // console.log("JWT_SECRET:", process.env.JWT_SECRET);
+    // console.error("JWT verification error:", error);
+    // console.log("Token without verification:", jwt.decode(token));
+    throw new UnauthenticatedError("Not authorized to access this route");
   }
 };
 

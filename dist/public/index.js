@@ -87,8 +87,6 @@ doneBtn === null || doneBtn === void 0 ? void 0 : doneBtn.addEventListener("clic
             const taskDesc = task.getDesc;
             const taskTitle = task.getTitle;
             const taskState = task.getState;
-            let tt = document.querySelector(".titleEL");
-            let desc = document.querySelector(".descriptionEL");
             modal === null || modal === void 0 ? void 0 : modal.classList.remove("slide-down");
             const { data } = yield axios.post("/home/todo/", {
                 taskDesc,

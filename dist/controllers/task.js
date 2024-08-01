@@ -16,18 +16,32 @@ const tasks_1 = __importDefault(require("../models/tasks"));
 const http_status_codes_1 = require("http-status-codes");
 const bad_request_1 = __importDefault(require("../errors/bad_request"));
 const not_found_1 = __importDefault(require("../errors/not-found"));
+const unauthenticated_1 = __importDefault(require("../errors/unauthenticated"));
 const getAllTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const tasks = yield tasks_1.default.find({ createdBy: (_a = req === null || req === void 0 ? void 0 : req.user) === null || _a === void 0 ? void 0 : _a.userId }).sort("createdAt");
     res.status(http_status_codes_1.StatusCodes.OK).json({ tasks, count: tasks.length });
 });
 const getTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { user: userId, params: { id: taskId }, } = req;
-    const task = yield tasks_1.default.findOne({ _id: taskId, createdBy: userId });
-    if (!task) {
-        throw new not_found_1.default(`No task with id: ${taskId}`);
+    if (!req.user || !req.user.userId) {
+        throw new unauthenticated_1.default("User not authenticated.");
     }
-    res.status(http_status_codes_1.StatusCodes.OK).json({ task });
+    const { params, user } = req;
+    const { id } = params;
+    const { userId } = user;
+    try {
+        const task = yield tasks_1.default.findOne({ _id: id, createdBy: userId });
+        if (!task) {
+            throw new not_found_1.default(`No task with id: ${id}`);
+        }
+        res.status(http_status_codes_1.StatusCodes.OK).json({ task });
+    }
+    catch (error) {
+        console.error("Error fetching task:", error);
+        res
+            .status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR)
+            .json({ msg: "An error occurred while fetching the task." });
+    }
 });
 const createTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
@@ -37,6 +51,9 @@ const createTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     console.log("task created successfully", req);
 });
 const updateTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!req.user || !req.user.userId) {
+        throw new unauthenticated_1.default("User not authenticated.");
+    }
     const { body: { title, description }, user: userId, params: { id: taskId }, } = req;
     if (title === "" || description === "") {
         throw new bad_request_1.default("Title or description cannot be empty");
@@ -48,12 +65,15 @@ const updateTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     res.status(http_status_codes_1.StatusCodes.OK).json({ task });
 });
 const deleteTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!req.user || !req.user.userId) {
+        throw new unauthenticated_1.default("User not authenticated.");
+    }
     const { user: userId, params: { id: taskId }, } = req;
     const task = yield tasks_1.default.findByIdAndDelete({ _id: taskId, createdBy: userId });
     if (!task) {
         throw new not_found_1.default(`No task with id ${taskId}`);
     }
-    res.status(http_status_codes_1.StatusCodes.OK).json({ msg: "Deleted the task" });
+    res.status(http_status_codes_1.StatusCodes.OK).json({ msg: `Deleted the task, ${task.title}.` });
 });
 exports.default = {
     getAllTask,

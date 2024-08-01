@@ -95,9 +95,6 @@ doneBtn?.addEventListener("click", async () => {
       const taskDesc: string = task.getDesc;
       const taskTitle: string = task.getTitle;
       const taskState: boolean = task.getState;
-      let tt: HTMLParagraphElement | null = document.querySelector(".titleEL");
-      let desc: HTMLParagraphElement | null =
-        document.querySelector(".descriptionEL");
 
       modal?.classList.remove("slide-down");
       const { data } = await axios.post("/home/todo/", {

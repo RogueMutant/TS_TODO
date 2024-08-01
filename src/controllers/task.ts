@@ -3,6 +3,7 @@ import TASK from "../models/tasks";
 import { StatusCodes } from "http-status-codes";
 import BadRequestError from "../errors/bad_request";
 import NotFoundError from "../errors/not-found";
+import UnauthenticatedError from "../errors/unauthenticated";
 import { customRequest } from "../types/custom";
 
 const getAllTask = async (req: customRequest, res: Response): Promise<void> => {
@@ -13,17 +14,25 @@ const getAllTask = async (req: customRequest, res: Response): Promise<void> => {
 };
 
 const getTask = async (req: customRequest, res: Response): Promise<void> => {
-  const {
-    user: userId,
-    params: { id: taskId },
-  } = req;
-
-  const task = await TASK.findOne({ _id: taskId, createdBy: userId });
-
-  if (!task) {
-    throw new NotFoundError(`No task with id: ${taskId}`);
+  if (!req.user || !req.user.userId) {
+    throw new UnauthenticatedError("User not authenticated.");
   }
-  res.status(StatusCodes.OK).json({ task });
+  const { params, user } = req;
+  const { id } = params;
+  const { userId } = user;
+
+  try {
+    const task = await TASK.findOne({ _id: id, createdBy: userId });
+    if (!task) {
+      throw new NotFoundError(`No task with id: ${id}`);
+    }
+    res.status(StatusCodes.OK).json({ task });
+  } catch (error) {
+    console.error("Error fetching task:", error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "An error occurred while fetching the task." });
+  }
 };
 
 const createTask = async (req: customRequest, res: Response): Promise<void> => {
@@ -34,6 +43,9 @@ const createTask = async (req: customRequest, res: Response): Promise<void> => {
 };
 
 const updateTask = async (req: customRequest, res: Response): Promise<void> => {
+  if (!req.user || !req.user.userId) {
+    throw new UnauthenticatedError("User not authenticated.");
+  }
   const {
     body: { title, description },
     user: userId,
@@ -58,6 +70,9 @@ const updateTask = async (req: customRequest, res: Response): Promise<void> => {
 };
 
 const deleteTask = async (req: customRequest, res: Response): Promise<void> => {
+  if (!req.user || !req.user.userId) {
+    throw new UnauthenticatedError("User not authenticated.");
+  }
   const {
     user: userId,
     params: { id: taskId },
@@ -68,8 +83,7 @@ const deleteTask = async (req: customRequest, res: Response): Promise<void> => {
   if (!task) {
     throw new NotFoundError(`No task with id ${taskId}`);
   }
-
-  res.status(StatusCodes.OK).json({ msg: "Deleted the task" });
+  res.status(StatusCodes.OK).json({ msg: `Deleted the task, ${task.title}.` });
 };
 
 export default {

@@ -33,7 +33,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     const token = user === null || user === void 0 ? void 0 : user.createJWT();
     res.status(http_status_codes_1.StatusCodes.OK).json({ user: { name: user === null || user === void 0 ? void 0 : user.name }, token });
-    console.log(req.user, token);
+    console.log(token);
 });
 exports.default = {
     register,

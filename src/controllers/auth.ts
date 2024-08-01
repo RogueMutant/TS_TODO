@@ -23,7 +23,7 @@ const login = async (req: customRequest, res: Response) => {
   }
   const token = user?.createJWT();
   res.status(StatusCodes.OK).json({ user: { name: user?.name }, token });
-  console.log(req.user, token);
+  console.log(token);
 };
 
 export default {
