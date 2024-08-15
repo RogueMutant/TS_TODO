@@ -1,3 +1,4 @@
+require("dotenv").config();
 import BadRequestError from "../errors/bad_request";
 import NotFoundError from "../errors/not-found";
 import { StatusCodes } from "http-status-codes";
@@ -8,8 +9,14 @@ import { customRequest } from "../types/custom";
 const register = async (req: customRequest, res: Response) => {
   const user = await users.create({ ...req.body });
   const token = user?.createJWT();
-  res.status(StatusCodes.OK).json({ user: { name: user?.name }, token });
-  console.log(req.user, token);
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: false,
+    maxAge: 24 * 60 * 60 * 1000,
+    sameSite: "lax",
+  });
+  res.status(StatusCodes.OK).json({ user: { name: user?.name } });
+  console.log(token);
 };
 
 const login = async (req: customRequest, res: Response) => {
@@ -22,7 +29,13 @@ const login = async (req: customRequest, res: Response) => {
     throw new NotFoundError("user does not exist!");
   }
   const token = user?.createJWT();
-  res.status(StatusCodes.OK).json({ user: { name: user?.name }, token });
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: false,
+    maxAge: 24 * 60 * 60 * 1000,
+    sameSite: "lax",
+  });
+  res.status(StatusCodes.OK).json({ user });
   console.log(token);
 };
 

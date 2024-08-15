@@ -3,35 +3,45 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TS_TODO</title>
-    <link rel="stylesheet" href="./css/styles.css" />
+    <title>Auth Page</title>
+    <link rel="stylesheet" href="./css/login.css" />
   </head>
   <body>
-    <section class="button-section">
-      <div class="nav">
-        <button id="add-btn">Add new task</button>
-        <button id="delete-btn">Delete all the task</button>
-      </div>
-    </section>
-    <section class="container"></section>
-    <p id="noTask">Nothing happening here.</p>
     <div class="modal">
-      <form action="post" id="new-task-form">
-        <input
-          type="text"
-          name=""
-          class="title"
-          placeholder="Enter the title"
-        />
-        <textarea
-          name="description"
-          class="description-el"
-          placeholder="Description..."
-        ></textarea>
-      </form>
-      <button id="done-btn">Done</button>
+      <p class="modalPara"></p>
     </div>
-    <script src="./js/index.js"></script>
+    <div class="auth-container">
+      <div class="auth-box">
+        <div class="form-wrapper">
+          <form class="form login-form active" id="loginForm">
+            <h2>Login</h2>
+            <!-- login email -->
+            <div class="input-group">
+              <label for="loginEmail">Email</label>
+              <input type="email" id="loginEmail" name="email" required />
+            </div>
+            <button type="submit" class="auth-btn">Login</button>
+          </form>
+
+          <form class="form signup-form" id="signupForm">
+            <h2>Sign Up</h2>
+            <!-- signup username -->
+            <div class="input-group">
+              <label for="signupUsername">Username</label>
+              <input type="text" id="signupUsername" name="username" required />
+            </div>
+            <!-- sign email -->
+            <div class="input-group">
+              <label for="signupEmail">Email</label>
+              <input type="email" id="signupEmail" name="email" required />
+            </div>
+            <button type="submit" class="auth-btn">Sign Up</button>
+          </form>
+        </div>
+        <button class="switch-btn" id="switchBtn">Switch to Sign Up</button>
+      </div>
+    </div>
+    <script src="./js/login.bundle.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js"></script>
   </body>
 </html>

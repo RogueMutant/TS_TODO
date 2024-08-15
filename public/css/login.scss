@@ -1,89 +1,119 @@
-$primary-color: #4caf50;
-$background-color: #f17a7a; // Modern light grey
-$form-background-color: #e4e4d1; // White background for forms
-$input-border-color: #ccc;
-$input-border-focus-color: $primary-color;
-$button-background-color: $primary-color;
-$button-color: #fff;
-$button-hover-color: darken($primary-color, 10%);
+// Variables
+$primary-color: #333;
+$secondary-color: #555;
+$bg-color: #b72424;
+$transition-duration: 0.5s;
+$form-width: 350px;
+$form-padding: 20px;
+$input-height: 40px;
+$button-height: 45px;
 
-body {
-  font-family: Arial, sans-serif;
-  background-color: $background-color;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+body,
+html {
   margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: $bg-color;
+  height: 100%;
+  display: flex;
+  // justify-content: center;
+  // align-items: center;
 }
 
+.modal {
+  height: 40px;
+  min-width: fit-content;
+  width: 200px;
+  background-color: $primary-color;
+  border-radius: 7px;
+  padding: 10px;
+  align-self: start;
+  position: relative;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: top 300ms ease-in-out;
+  .modalPara {
+    color: $bg-color;
+    font-weight: bold;
+  }
+}
+.slidedown {
+  top: 30%;
+}
 .auth-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 100%;
+  max-width: 500px;
+  width: $form-width;
+  padding: 20px;
+  margin: 0 auto;
 }
 
 .auth-box {
-  background-color: $form-background-color;
-  border-radius: 8px;
+  background-color: rgb(255, 214, 6);
+  padding: $form-padding;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  width: 400px;
-  position: relative;
-}
-
-.toggle-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: $primary-color;
-  color: $button-color;
-  border: none;
-  border-radius: 4px;
-  padding: 10px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: $button-hover-color;
-  }
-}
-
-.form-container {
-  display: none;
-}
-
-.form-container form {
-  display: flex;
-  flex-direction: column;
-}
-
-h2 {
-  margin-bottom: 20px;
+  width: 100%;
   text-align: center;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  min-height: 350px; // Increased min-height for better spacing
+}
+
+.form-wrapper {
+  width: 100%;
+  position: relative;
+  height: auto;
+  overflow: hidden;
+}
+
+.form {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition: opacity $transition-duration ease-in-out,
+    transform $transition-duration ease-in-out;
+  opacity: 0;
+  transform: translateX(-100%);
+  display: block;
+
+  &.active {
+    opacity: 1;
+    transform: translateX(0);
+    position: relative;
+  }
+
+  &.inactive {
+    opacity: 0;
+    transform: translateX(100%);
+  }
 }
 
 .input-group {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 
   label {
     display: block;
-    margin: 5px;
-    font-weight: bold;
+    margin-bottom: 5px;
+    color: $primary-color;
+    text-align: left;
   }
 
   input {
-    width: calc(100% - 20px);
+    width: 100%;
     padding: 10px;
-    border: 1px solid $input-border-color;
-    border-radius: 4px;
+    border: 1px solid $secondary-color;
+    background-color: #e6dddd;
+    border-radius: 5px;
     outline: none;
-    transition: border 0.3s;
+    height: $input-height;
+    box-sizing: border-box;
 
     &:focus {
-      border-color: $input-border-focus-color;
+      border-color: $primary-color;
     }
   }
 }
@@ -91,15 +121,33 @@ h2 {
 .auth-btn {
   width: 100%;
   padding: 10px;
-  background-color: $button-background-color;
-  color: $button-color;
   border: none;
-  border-radius: 4px;
+  background-color: $primary-color;
+  font-weight: 500;
+  letter-spacing: 1.2px;
+  color: white;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
+  height: $button-height;
+  margin-top: 10px;
+  transition: background-color 0.3s ease-in-out;
 
   &:hover {
-    background-color: $button-hover-color;
+    background-color: darken($primary-color, 10%);
+  }
+}
+
+.switch-btn {
+  margin-top: 20px;
+  background: none;
+  border: none;
+  color: $secondary-color;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.3s ease-in-out;
+  font-size: 0.9rem;
+
+  &:hover {
+    color: darken($secondary-color, 10%);
   }
 }

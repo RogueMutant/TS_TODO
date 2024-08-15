@@ -39,7 +39,7 @@ const createTask = async (req: customRequest, res: Response): Promise<void> => {
   req.body.createdBy = req?.user?.userId;
   const task = await TASK.create(req.body);
   res.status(StatusCodes.CREATED).json({ msg: "New Task created", task });
-  console.log("task created successfully", req);
+  console.log("task created successfully");
 };
 
 const updateTask = async (req: customRequest, res: Response): Promise<void> => {

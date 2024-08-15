@@ -6,9 +6,11 @@ import errorHandlerMiddleware from "./middleware/errorHandler";
 import todoRoute from "./routers/routes";
 import todoAuth from "./routers/auth";
 import authentiicateUsers from "./middleware/auth";
+import cookieParser from "cookie-parser";
 
 const connectDB = require("./db/connect");
 const app: Application = express();
+app.use(cookieParser());
 app.use(express.static("./public"));
 app.use(express.json());
 
